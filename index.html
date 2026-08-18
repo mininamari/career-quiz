@@ -1,0 +1,1068 @@
+<meta charset="utf-8">
+<title>Career Spark Quiz</title>
+<style>
+  /* Novakid "Back to English" brand system — a fixed identity, not a
+     light/dark toggle: purple leads (~70%), white supports (~20%),
+     indigo is the only text color on light surfaces. */
+  :root {
+    --purple: #4221B8;
+    --purple-deep: #34199A;
+    --white: #FFFFFF;
+    --indigo: #210A74;
+    --indigo-soft: #5B4E96;
+    --light-purple: #9694FF;
+    --light-purple-tint: #EDECFF;
+    --coral: #FF5A56;
+    --yellow: #FFE60A;
+    --shadow: rgba(33, 10, 116, 0.28);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: radial-gradient(120% 100% at 50% 0%, var(--purple) 0%, var(--purple-deep) 100%);
+    color: var(--indigo);
+    font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .display {
+    font-family: ui-rounded, "SF Pro Rounded", "Segoe UI Rounded", "Nunito", system-ui, sans-serif;
+  }
+
+  /* Doodle layer: 1-3 hand-drawn line marks scattered near the edges,
+     white-on-purple, never over the card, logo, or hero copy. */
+  .doodles {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .doodles svg {
+    position: absolute;
+    stroke: var(--white);
+    opacity: 0.5;
+    fill: none;
+    stroke-width: 2.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .doodle-star { top: 96px; left: 5%; width: 34px; }
+  .doodle-bubble { top: 18%; right: 4%; width: 40px; }
+  .doodle-globe { bottom: 14%; left: 3%; width: 38px; }
+  .doodle-bulb { bottom: 6%; right: 6%; width: 32px; }
+  @media (max-width: 560px) {
+    .doodle-bubble, .doodle-globe { display: none; }
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    row-gap: 10px;
+    padding: 16px 18px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--white);
+    font-weight: 900;
+    font-size: 1.15rem;
+    letter-spacing: -0.01em;
+  }
+  .brand-icon { font-size: 1.1rem; }
+  .topbar-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    row-gap: 8px;
+  }
+  @media (max-width: 360px) {
+    .topbar { padding: 12px 14px; gap: 8px; }
+    .pill-cta { font-size: 0.72rem; padding: 8px 12px; }
+    .lang-switch { font-size: 0.75rem; padding: 6px 22px 6px 10px; }
+  }
+
+  .flag-chip {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--white);
+    border-radius: 10px;
+    padding: 5px 7px;
+    box-shadow: 0 4px 10px var(--shadow);
+  }
+  .flag-chip svg { display: block; width: 22px; height: 15px; border-radius: 2px; }
+
+  .lang-switch {
+    appearance: none;
+    background: var(--white);
+    color: var(--indigo);
+    border: none;
+    border-radius: 999px;
+    padding: 7px 26px 7px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    background-image: linear-gradient(45deg, transparent 50%, var(--indigo-soft) 50%), linear-gradient(135deg, var(--indigo-soft) 50%, transparent 50%);
+    background-position: right 12px center, right 7px center;
+    background-size: 5px 5px, 5px 5px;
+    background-repeat: no-repeat;
+    cursor: pointer;
+  }
+  .pill-cta {
+    background: var(--yellow);
+    color: var(--indigo);
+    font-weight: 800;
+    font-size: 0.78rem;
+    padding: 9px 14px;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px var(--shadow);
+    transition: transform 0.15s ease;
+  }
+  .pill-cta:hover { transform: translateY(-1px); }
+
+  .stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 6px 18px 40px;
+    gap: 16px;
+  }
+
+  .card {
+    background: var(--white);
+    border-radius: 28px;
+    padding: 28px 24px;
+    box-shadow: 0 16px 40px var(--shadow);
+  }
+
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 800;
+    font-size: 0.72rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--indigo);
+    background: var(--light-purple-tint);
+    padding: 6px 12px;
+    border-radius: 999px;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+    font-weight: 900;
+    line-height: 1.15;
+    margin: 14px 0 10px;
+    text-wrap: balance;
+    color: var(--indigo);
+  }
+  .intro-copy {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    color: var(--indigo-soft);
+    margin: 0 0 12px;
+  }
+  .intro-highlight {
+    font-size: 0.98rem;
+    line-height: 1.55;
+    margin: 0 0 20px;
+    font-weight: 600;
+    color: var(--indigo);
+  }
+
+  .start-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background: var(--yellow);
+    color: var(--indigo);
+    font-size: 1.05rem;
+    font-weight: 900;
+    border: none;
+    border-radius: 18px;
+    padding: 16px;
+    cursor: pointer;
+    box-shadow: 0 10px 24px var(--shadow);
+    transition: transform 0.15s ease;
+  }
+  .start-btn:hover { transform: translateY(-2px); }
+
+  .skip-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--purple);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  .progress-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    gap: 12px;
+  }
+  .progress-count {
+    font-variant-numeric: tabular-nums;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--indigo-soft);
+    white-space: nowrap;
+  }
+  .progress-track {
+    flex: 1;
+    height: 8px;
+    background: var(--light-purple-tint);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--purple);
+    border-radius: 999px;
+    transition: width 0.35s ease;
+  }
+
+  .q-dots {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 18px;
+  }
+  .q-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--light-purple-tint);
+  }
+  .q-dot.answered { background: var(--light-purple); }
+  .q-dot.current { background: var(--purple); }
+
+  .q-text {
+    font-size: 1.25rem;
+    font-weight: 800;
+    line-height: 1.3;
+    margin: 0 0 18px;
+    text-wrap: balance;
+    color: var(--indigo);
+  }
+
+  .options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    text-align: left;
+    background: var(--light-purple-tint);
+    border: 2px solid transparent;
+    border-radius: 16px;
+    padding: 13px 14px;
+    font-size: 0.95rem;
+    color: var(--indigo);
+    cursor: pointer;
+    transition: border-color 0.15s ease, transform 0.1s ease, background 0.15s ease, color 0.15s ease;
+  }
+  .option:hover { transform: translateY(-1px); border-color: var(--light-purple); }
+  .option.selected {
+    background: var(--purple);
+    color: var(--white);
+  }
+  .option-badge {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 10px;
+    background: var(--white);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.05rem;
+  }
+  .option-text { flex: 1; line-height: 1.4; }
+
+  .back-row {
+    margin-top: 16px;
+    display: flex;
+    justify-content: flex-start;
+  }
+  .ghost-btn {
+    background: none;
+    border: none;
+    color: var(--indigo-soft);
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    padding: 6px 4px;
+  }
+  .ghost-btn:hover { color: var(--purple); }
+
+  .mid-banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--coral);
+    border-radius: 18px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+  }
+  .mid-banner-icon { font-size: 1.5rem; }
+  .mid-banner-text { flex: 1; font-size: 0.85rem; line-height: 1.4; font-weight: 600; color: var(--indigo); }
+  .mid-banner-cta {
+    background: var(--yellow);
+    color: var(--indigo);
+    font-size: 0.78rem;
+    font-weight: 800;
+    padding: 8px 12px;
+    border-radius: 999px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .result-badge {
+    width: 64px;
+    height: 64px;
+    border-radius: 20px;
+    background: var(--light-purple-tint);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    margin-bottom: 14px;
+  }
+  .result-kicker {
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--indigo-soft);
+    margin-bottom: 4px;
+  }
+  .result-title {
+    font-size: 1.7rem;
+    font-weight: 900;
+    margin: 0 0 10px;
+    text-wrap: balance;
+    color: var(--indigo);
+  }
+  .result-copy {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: var(--indigo-soft);
+    margin: 0 0 16px;
+  }
+  .career-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 18px;
+  }
+  .career-chip {
+    background: var(--light-purple-tint);
+    color: var(--indigo);
+    border-radius: 12px;
+    padding: 10px 12px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .result-pitch {
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: var(--indigo);
+    background: var(--light-purple-tint);
+    border-radius: 16px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+  }
+
+  .hero-cta {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    background: var(--yellow);
+    color: var(--indigo);
+    font-weight: 900;
+    font-size: 1.05rem;
+    padding: 18px;
+    border-radius: 18px;
+    box-shadow: 0 12px 28px var(--shadow);
+    transition: transform 0.15s ease;
+  }
+  .hero-cta:hover { transform: translateY(-2px); }
+  .hero-cta-sub {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    opacity: 0.75;
+    margin-top: 3px;
+  }
+
+  .retake-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 0.85rem;
+    color: var(--indigo-soft);
+    text-decoration: underline;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  [hidden] { display: none !important; }
+</style>
+
+<div class="doodles" aria-hidden="true">
+  <svg class="doodle-star" viewBox="0 0 40 40"><path d="M20 4 L23 16 L35 16 L25 24 L29 36 L20 28 L11 36 L15 24 L5 16 L17 16 Z"/></svg>
+  <svg class="doodle-bubble" viewBox="0 0 44 36"><path d="M4 6 h36 v20 h-22 l-8 8 v-8 h-6 Z"/><circle cx="14" cy="16" r="1.4" fill="currentColor" stroke="none"/><circle cx="22" cy="16" r="1.4" fill="currentColor" stroke="none"/><circle cx="30" cy="16" r="1.4" fill="currentColor" stroke="none"/></svg>
+  <svg class="doodle-globe" viewBox="0 0 40 40"><circle cx="20" cy="20" r="16"/><path d="M4 20 h32 M20 4 v32 M8 10 q12 8 24 0 M8 30 q12 -8 24 0"/></svg>
+  <svg class="doodle-bulb" viewBox="0 0 32 40"><path d="M16 4 a11 11 0 0 1 7 19 c-2 2 -3 4 -3 7 h-8 c0 -3 -1 -5 -3 -7 a11 11 0 0 1 7 -19 Z"/><path d="M12 33 h8 M13 37 h6"/></svg>
+</div>
+
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><span class="brand-icon">🚀</span><span id="brandName">Novakid</span></div>
+    <div class="topbar-right">
+      <div class="flag-chip" title="Native English teachers">
+        <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
+          <rect width="60" height="40" fill="#012169"/>
+          <path d="M0 0 L60 40 M60 0 L0 40" stroke="#FFFFFF" stroke-width="8"/>
+          <path d="M0 0 L60 40 M60 0 L0 40" stroke="#C8102E" stroke-width="3.2"/>
+          <path d="M30 0 V40 M0 20 H60" stroke="#FFFFFF" stroke-width="13"/>
+          <path d="M30 0 V40 M0 20 H60" stroke="#C8102E" stroke-width="7.5"/>
+        </svg>
+      </div>
+      <select class="lang-switch" id="langSwitch" aria-label="Language"></select>
+      <a class="pill-cta" id="headerCta" href="#" target="_blank" rel="noopener"></a>
+    </div>
+  </header>
+
+  <main class="stage">
+    <section class="card" id="screenIntro">
+      <span class="kicker" id="introKicker"></span>
+      <h1 class="display" id="introTitle"></h1>
+      <p class="intro-copy" id="introCopy1"></p>
+      <p class="intro-highlight" id="introCopy2"></p>
+      <button class="start-btn display" id="startBtn"></button>
+      <a class="skip-link" id="skipLink" href="#" target="_blank" rel="noopener"></a>
+    </section>
+
+    <section class="card" id="screenQuiz" hidden>
+      <div class="progress-row">
+        <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+        <span class="progress-count" id="progressCount"></span>
+      </div>
+      <div class="q-dots" id="qDots"></div>
+      <h2 class="q-text display" id="qText"></h2>
+      <div class="options" id="qOptions"></div>
+      <div class="back-row">
+        <button class="ghost-btn" id="backBtn"></button>
+      </div>
+    </section>
+
+    <section class="card" id="screenResult" hidden>
+      <div class="result-badge" id="resultBadge"></div>
+      <div class="result-kicker" id="resultKicker"></div>
+      <h2 class="result-title display" id="resultTitle"></h2>
+      <p class="result-copy" id="resultCopy"></p>
+      <div class="career-grid" id="careerGrid"></div>
+      <p class="result-pitch" id="resultPitch"></p>
+      <a class="hero-cta display" id="resultCta" href="#" target="_blank" rel="noopener">
+        <span id="resultCtaMain"></span>
+        <span class="hero-cta-sub" id="resultCtaSub"></span>
+      </a>
+      <button class="retake-link" id="retakeBtn"></button>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------------------------------------------------------------
+   * Region / signup-link config.
+   * One URL today; to localize later, add a key matching a LANG code below
+   * (e.g. es: "https://...") — REGION_LINKS.default is the fallback.
+   * ------------------------------------------------------------------- */
+  var REGION_LINKS = {
+    default: "https://www.novakidschool.com/"
+  };
+  function linkFor(langCode) {
+    return REGION_LINKS[langCode] || REGION_LINKS.default;
+  }
+
+  var LETTERS = ["A", "B", "C", "D", "E", "F"];
+
+  var LANG = {
+    en: {
+      name: "English",
+      brand: "Novakid",
+      header: { cta: "Free trial lesson" },
+      intro: {
+        kicker: "Novakid Career Quiz",
+        title: "What Career Fits Your Child?",
+        copy1: "Every child is born with their own strengths: some love inventing stories, some enjoy building with construction sets, exploring plants, or helping others.",
+        copy2: "💛 Answer just 8 questions to see which abilities your child is already showing — and what they reveal about a future career!",
+        start: "Start the quiz",
+        skip: "Already convinced? Book a free trial lesson →"
+      },
+      quiz: {
+        questionLabel: "Question",
+        of: "of",
+        back: "← Back"
+      },
+      midBanner: {
+        icon: "🚀",
+        text: "While your child's future career takes shape — why not give English a try? Book a free trial lesson with Novakid.",
+        cta: "Book now"
+      },
+      result: {
+        kicker: "Your child's result",
+        pitchIntro: "Start learning English with Novakid! Tap the button below to book a free trial lesson!",
+        ctaMain: "Book a free trial lesson",
+        ctaSub: "with Novakid — for free",
+        retake: "Retake the quiz"
+      },
+      questions: [
+        {
+          text: "What does your child do in their free time?",
+          options: [
+            { l: "A", e: "🎨", t: "Draws, sings, dances, or makes things with their hands." },
+            { l: "B", e: "🔬", t: "Runs experiments, asks lots of questions, and loves learning how the world works." },
+            { l: "C", e: "🧩", t: "Builds with construction sets and solves tricky puzzles." },
+            { l: "D", e: "💬", t: "Talks with other kids, makes friends easily, and loves telling stories." },
+            { l: "E", e: "⭐", t: "Invents new games, comes up with wild ideas, and loves being in charge." },
+            { l: "F", e: "❤️", t: "Takes care of animals, helps younger kids, or worries about others' feelings." }
+          ]
+        },
+        {
+          text: "If your child gets a new toy, what's the first thing they do?",
+          options: [
+            { l: "A", e: "🎨", t: "Makes up a story for it — where it's from, who its friends are, what countries it's visited." },
+            { l: "B", e: "🔬", t: "Wants to understand how it works and what it's made of." },
+            { l: "C", e: "🧩", t: "Tries to build or upgrade it." },
+            { l: "D", e: "💬", t: "Shows it to friends and invites them to play together." },
+            { l: "E", e: "⭐", t: "Invents a brand-new game with it." },
+            { l: "F", e: "❤️", t: "Happily shares it with a friend." }
+          ]
+        },
+        {
+          text: "How does your child usually solve tricky problems?",
+          options: [
+            { l: "A", e: "🎨", t: "Comes up with unusual ways to solve them." },
+            { l: "B", e: "🔬", t: "Looks for information and asks a ton of questions." },
+            { l: "C", e: "🧩", t: "Tries several options and sees what works." },
+            { l: "D", e: "💬", t: "Wants to talk it through together." },
+            { l: "E", e: "⭐", t: "Comes up with their own plan of action." },
+            { l: "F", e: "❤️", t: "Looks for a solution that works for everyone." }
+          ]
+        },
+        {
+          text: "Imagine you're walking in the park. What's your child likely to say first?",
+          options: [
+            { l: "A", e: "🎨", t: "“Let's make up a game — like we're jungle explorers!”" },
+            { l: "B", e: "🔬", t: "“Why does this tree have leaves like that?”" },
+            { l: "C", e: "🧩", t: "“I wonder if I can climb that high?”" },
+            { l: "D", e: "💬", t: "“Look, a playground! I want to meet that kid!”" },
+            { l: "E", e: "⭐", t: "“Let's go to the playground first, then feed the ducks!”" },
+            { l: "F", e: "❤️", t: "“Look, that toddler is crying... maybe they need help?”" }
+          ]
+        },
+        {
+          text: "If you go on a trip, your child...",
+          options: [
+            { l: "A", e: "🎨", t: "Takes photos of beautiful places — and comes home with 1,000+ from a 3-day trip." },
+            { l: "B", e: "🔬", t: "Wants to know when the city was built and what it's famous for." },
+            { l: "C", e: "🧩", t: "Gets fascinated by unusual buildings and architecture." },
+            { l: "D", e: "💬", t: "Makes 5 new friends on the very first day." },
+            { l: "E", e: "⭐", t: "Puts together a detailed plan for every day of the trip." },
+            { l: "F", e: "❤️", t: "Makes sure nobody forgets anything!" }
+          ]
+        },
+        {
+          text: "Which compliment makes your child happiest?",
+          options: [
+            { l: "A", e: "🎨", t: "“That turned out so beautiful!”" },
+            { l: "B", e: "🔬", t: "“You know so much!”" },
+            { l: "C", e: "🧩", t: "“You did such a great job!”" },
+            { l: "D", e: "💬", t: "“Talking to you is so interesting!”" },
+            { l: "E", e: "⭐", t: "“You're a real leader!”" },
+            { l: "F", e: "❤️", t: "“You're so kind!”" }
+          ]
+        },
+        {
+          text: "What does your child love watching the most?",
+          options: [
+            { l: "A", e: "🎨", t: "Cartoons." },
+            { l: "B", e: "🔬", t: "Educational videos." },
+            { l: "C", e: "🧩", t: "Videos about construction, machines, or building sets." },
+            { l: "D", e: "💬", t: "Interviews, skits, and talk shows for kids." },
+            { l: "E", e: "⭐", t: "Sports competitions and team games." },
+            { l: "F", e: "❤️", t: "Videos about animals and nature." }
+          ]
+        },
+        {
+          text: "How would you most often describe your child?",
+          options: [
+            { l: "A", e: "🎨", t: "A dreamer with a big imagination." },
+            { l: "B", e: "🔬", t: "A curious explorer." },
+            { l: "C", e: "🧩", t: "An inventor." },
+            { l: "D", e: "💬", t: "Very sociable." },
+            { l: "E", e: "⭐", t: "An inspiring leader." },
+            { l: "F", e: "❤️", t: "A kind helper." }
+          ]
+        }
+      ],
+      results: {
+        A: {
+          emoji: "🎨",
+          title: "The Creator",
+          copy: "Sounds like your child loves imagining, creating, and expressing ideas through art!",
+          careers: ["🎭 Acting", "🎨 Design", "📸 Photography", "🎬 Animation", "🎵 Music", "✍️ Writing"],
+          pitch: "Many creative careers are international by nature! English will help your child learn from the world's best specialists, take part in international competitions, live without language barriers, and one day share their creative projects with the whole world."
+        },
+        B: {
+          emoji: "🔬",
+          title: "The Explorer",
+          copy: "Your child loves searching for answers and isn't afraid of tricky problems — they love asking questions and figuring out how the world works!",
+          careers: ["🧬 Medicine", "🧪 Chemistry", "🌍 Ecology", "🚀 Space science", "💻 Programming", "🔬 Research"],
+          pitch: "Most scientific discoveries, research papers, international olympiads, and educational programs are published in English. The earlier your child starts learning the language, the more opportunities will open up for their future."
+        },
+        C: {
+          emoji: "🧩",
+          title: "The Maker",
+          copy: "Your child loves finding unconventional solutions and enjoys understanding how things work. They're patient, focused, and not afraid of a challenge!",
+          careers: ["🏗 Architecture", "⚙️ Engineering", "🤖 Robotics", "💻 Game dev", "🚗 Automotive", "✈️ Aviation"],
+          pitch: "Today's technology is built by international teams. English will help your child study new developments, use the best tools, and build a career in any country in the world."
+        },
+        D: {
+          emoji: "💬",
+          title: "The Communicator",
+          copy: "Your child makes friends easily, loves new places, and is curious about other countries and cultures.",
+          careers: ["🎤 Journalism", "👩‍🏫 Teaching", "🎙 Broadcasting", "🌍 Tourism", "🤝 Diplomacy", "📚 Translation"],
+          pitch: "English is an essential tool for these careers — it helps you connect with people all over the world, travel with ease, build a career at international companies, and feel confident in any country."
+        },
+        E: {
+          emoji: "⭐",
+          title: "The Leader",
+          copy: "Your child loves taking initiative, inspiring others, and organizing everything and everyone around them!",
+          careers: ["💼 Entrepreneurship", "📈 Management", "🏛 Public policy", "🎯 Producing", "⚽ Sports mgmt", "🌍 Global business"],
+          pitch: "Leaders in these fields work in an international environment — negotiating, launching projects, and talking with people from all over the world in English."
+        },
+        F: {
+          emoji: "❤️",
+          title: "The Helper",
+          copy: "Your child is very attentive to others' feelings — they know how to support, care for others, and feel genuinely happy when they can help.",
+          careers: ["👩‍⚕️ Medicine", "🐾 Veterinary", "🧠 Psychology", "👩‍🏫 Education", "🌿 Ecology", "❤️ Charity work"],
+          pitch: "Today, helping people and animals often brings together specialists from around the world. English opens the door to international experience, new research, and joint projects."
+        }
+      }
+    },
+
+    ru: {
+      name: "Русский",
+      brand: "Novakid",
+      header: { cta: "Пробный урок" },
+      intro: {
+        kicker: "Квиз Novakid о профессиях",
+        title: "Какая профессия подойдёт вашему ребёнку?",
+        copy1: "Каждый ребёнок рождается со своими сильными сторонами: кто-то любит придумывать истории, кто-то — возиться с конструктором, исследовать растения или помогать окружающим.",
+        copy2: "💛 Ответьте всего на 8 вопросов и узнайте, какие способности уже сейчас проявляются у вашего ребёнка и что они говорят о его будущей профессии!",
+        start: "Начать квиз",
+        skip: "Уже готовы? Записаться на бесплатный урок →"
+      },
+      quiz: {
+        questionLabel: "Вопрос",
+        of: "из",
+        back: "← Назад"
+      },
+      midBanner: {
+        icon: "🚀",
+        text: "Пока будущая профессия вашего ребёнка вырисовывается — почему бы не попробовать английский? Запишитесь на бесплатный урок в Novakid.",
+        cta: "Записаться"
+      },
+      result: {
+        kicker: "Результат вашего ребёнка",
+        pitchIntro: "Начните изучать английский в Novakid! Нажимайте на кнопку, чтобы записаться на бесплатный пробный урок!",
+        ctaMain: "Записаться на бесплатный урок",
+        ctaSub: "в Novakid — бесплатно",
+        retake: "Пройти квиз ещё раз"
+      },
+      questions: [
+        {
+          text: "Что ваш ребёнок делает в свободное время?",
+          options: [
+            { l: "A", e: "🎨", t: "Рисует, поёт, танцует или мастерит что-то своими руками." },
+            { l: "B", e: "🔬", t: "Проводит эксперименты, задаёт много вопросов и любит узнавать, как устроен мир." },
+            { l: "C", e: "🧩", t: "Собирает конструкторы и решает сложные головоломки." },
+            { l: "D", e: "💬", t: "Общается с другими детьми, легко знакомится и любит рассказывать истории." },
+            { l: "E", e: "⭐", t: "Придумывает новые игры, генерирует безумные идеи и любит быть главным." },
+            { l: "F", e: "❤️", t: "Заботится о животных, помогает младшим или переживает за других." }
+          ]
+        },
+        {
+          text: "Если перед вашим ребёнком новая игрушка, что он сделает первым?",
+          options: [
+            { l: "A", e: "🎨", t: "Придумает для неё историю: откуда игрушка, кто её друзья, в каких странах она была." },
+            { l: "B", e: "🔬", t: "Захочет понять, как она работает и из чего сделана." },
+            { l: "C", e: "🧩", t: "Попробует собрать или модернизировать её." },
+            { l: "D", e: "💬", t: "Покажет друзьям и предложит поиграть вместе." },
+            { l: "E", e: "⭐", t: "Придумает новую игру с этой игрушкой." },
+            { l: "F", e: "❤️", t: "С удовольствием поделится игрушкой с кем-нибудь из друзей." }
+          ]
+        },
+        {
+          text: "Как ваш ребёнок чаще всего решает сложные задачи?",
+          options: [
+            { l: "A", e: "🎨", t: "Придумывает необычные способы решения." },
+            { l: "B", e: "🔬", t: "Ищет информацию и задаёт кучу вопросов." },
+            { l: "C", e: "🧩", t: "Пробует несколько вариантов и смотрит, что сработает." },
+            { l: "D", e: "💬", t: "Просит обсудить решение вместе." },
+            { l: "E", e: "⭐", t: "Сам предлагает план действий." },
+            { l: "F", e: "❤️", t: "Ищет решение, которое устроит всех." }
+          ]
+        },
+        {
+          text: "Представьте, что вы гуляете в парке. Что ваш ребёнок, скорее всего, скажет первым?",
+          options: [
+            { l: "A", e: "🎨", t: "«Давай придумаем игру! Например, будто мы исследователи джунглей!»" },
+            { l: "B", e: "🔬", t: "«А почему у этого дерева такие листья?»" },
+            { l: "C", e: "🧩", t: "«Интересно, смогу ли я залезть так высоко?»" },
+            { l: "D", e: "💬", t: "«Смотри, детская площадка! Хочу познакомиться с тем мальчиком!»" },
+            { l: "E", e: "⭐", t: "«Давайте сначала пойдём на площадку, а потом покормим уток!»" },
+            { l: "F", e: "❤️", t: "«Смотри, малыш плачет... Может, ему нужна помощь?»" }
+          ]
+        },
+        {
+          text: "Если вы отправитесь в путешествие, ваш ребёнок...",
+          options: [
+            { l: "A", e: "🎨", t: "Будет фотографировать красивые места и привезёт +1000 фото за 3 дня поездки." },
+            { l: "B", e: "🔬", t: "Захочет узнать, когда город был построен и чем он знаменит." },
+            { l: "C", e: "🧩", t: "Заинтересуется необычными зданиями и архитектурой." },
+            { l: "D", e: "💬", t: "Заведёт 5 новых друзей в первый же день." },
+            { l: "E", e: "⭐", t: "Составит подробный план действий на каждый день путешествия." },
+            { l: "F", e: "❤️", t: "Проследит, чтобы никто ничего не забыл!" }
+          ]
+        },
+        {
+          text: "Какая похвала радует вашего ребёнка больше всего?",
+          options: [
+            { l: "A", e: "🎨", t: "«Как красиво получилось!»" },
+            { l: "B", e: "🔬", t: "«Ты столько всего знаешь!»" },
+            { l: "C", e: "🧩", t: "«Ты отлично справился!»" },
+            { l: "D", e: "💬", t: "«С тобой так интересно разговаривать!»" },
+            { l: "E", e: "⭐", t: "«Ты настоящий лидер!»" },
+            { l: "F", e: "❤️", t: "«Ты такой добрый!»" }
+          ]
+        },
+        {
+          text: "Что ребёнок любит смотреть чаще всего?",
+          options: [
+            { l: "A", e: "🎨", t: "Мультфильмы." },
+            { l: "B", e: "🔬", t: "Познавательные видео." },
+            { l: "C", e: "🧩", t: "Видео про строительство, механизмы или конструкторы." },
+            { l: "D", e: "💬", t: "Интервью, сценки, разговорные шоу для детей." },
+            { l: "E", e: "⭐", t: "Спортивные соревнования и командные игры." },
+            { l: "F", e: "❤️", t: "Видео про животных и природу." }
+          ]
+        },
+        {
+          text: "Каким вы чаще всего видите своего ребёнка?",
+          options: [
+            { l: "A", e: "🎨", t: "Фантазёром и мечтателем." },
+            { l: "B", e: "🔬", t: "Любознательным исследователем." },
+            { l: "C", e: "🧩", t: "Изобретателем." },
+            { l: "D", e: "💬", t: "Общительным." },
+            { l: "E", e: "⭐", t: "Вдохновителем и лидером." },
+            { l: "F", e: "❤️", t: "Добрым помощником." }
+          ]
+        }
+      ],
+      results: {
+        A: {
+          emoji: "🎨",
+          title: "Творец",
+          copy: "Похоже, ваш ребёнок любит фантазировать, создавать новое и выражать свои идеи через творчество!",
+          careers: ["🎭 Актёрство", "🎨 Дизайн", "📸 Фотография", "🎬 Анимация", "🎵 Музыка", "✍️ Писательство"],
+          pitch: "Многие творческие профессии давно стали международными! Английский поможет вашему ребёнку учиться у лучших специалистов мира, участвовать в международных конкурсах и однажды представить свои творческие проекты всему миру."
+        },
+        B: {
+          emoji: "🔬",
+          title: "Исследователь",
+          copy: "Ваш ребёнок любит искать ответы и не боится сложных задач. Он обожает задавать вопросы и разбираться в том, как устроен мир!",
+          careers: ["🧬 Медицина", "🧪 Химия", "🌍 Экология", "🚀 Космонавтика", "💻 Программирование", "🔬 Наука"],
+          pitch: "Большинство научных открытий, исследований, международных олимпиад и образовательных программ публикуются на английском! Чем раньше ваш ребёнок начнёт изучать язык, тем больше возможностей откроется перед ним в будущем."
+        },
+        C: {
+          emoji: "🧩",
+          title: "Создатель",
+          copy: "Ваш ребёнок любит искать неординарные решения и обожает разбираться в устройстве вещей. Он терпеливый, внимательный и не боится сложных задач!",
+          careers: ["🏗 Архитектура", "⚙️ Инженерия", "🤖 Робототехника", "💻 Разработка игр", "🚗 Автопром", "✈️ Авиация"],
+          pitch: "Сейчас современные технологии создаются международными командами. Английский поможет вашему ребёнку изучать новые разработки, пользоваться лучшими инструментами и строить карьеру в любой стране мира."
+        },
+        D: {
+          emoji: "💬",
+          title: "Коммуникатор",
+          copy: "Ваш ребёнок легко общается и заводит друзей, любит новые места и интересуется другими странами.",
+          careers: ["🎤 Журналистика", "👩‍🏫 Преподавание", "🎙 Телевидение", "🌍 Туризм", "🤝 Дипломатия", "📚 Переводы"],
+          pitch: "Для этих профессий английский — необходимый инструмент! Он помогает общаться с людьми по всему миру, путешествовать и строить карьеру в международных компаниях."
+        },
+        E: {
+          emoji: "⭐",
+          title: "Лидер",
+          copy: "Ваш ребёнок любит брать инициативу, вдохновлять других и организовывать всё вокруг!",
+          careers: ["💼 Предпринимательство", "📈 Менеджмент", "🏛 Госуправление", "🎯 Продюсирование", "⚽ Спортменеджмент", "🌍 Межд. бизнес"],
+          pitch: "Лидеры таких направлений работают в международной среде — ведут переговоры, запускают проекты и общаются с людьми из разных стран на английском."
+        },
+        F: {
+          emoji: "❤️",
+          title: "Помощник",
+          copy: "Ваш ребёнок очень внимателен к чувствам других. Он умеет поддерживать, заботиться и искренне радуется, когда может быть полезным.",
+          careers: ["👩‍⚕️ Медицина", "🐾 Ветеринария", "🧠 Психология", "👩‍🏫 Педагогика", "🌿 Экология", "❤️ Благотворительность"],
+          pitch: "Сегодня помощь людям и животным часто объединяет специалистов из разных стран. Английский открывает доступ к международному опыту, новым исследованиям и совместным проектам."
+        }
+      }
+    }
+  };
+
+  var SUPPORTED = Object.keys(LANG);
+
+  function detectLang() {
+    var candidates = (navigator.languages && navigator.languages.length) ? navigator.languages : [navigator.language || "en"];
+    for (var i = 0; i < candidates.length; i++) {
+      var code = String(candidates[i]).toLowerCase().split("-")[0];
+      if (SUPPORTED.indexOf(code) !== -1) return code;
+    }
+    return "en";
+  }
+
+  var state = {
+    lang: detectLang(),
+    qIndex: 0,
+    answers: [] // answers[i] = letter
+  };
+
+  // ---- Language switcher ----
+  var langSwitch = document.getElementById("langSwitch");
+  SUPPORTED.forEach(function (code) {
+    var opt = document.createElement("option");
+    opt.value = code;
+    opt.textContent = LANG[code].name;
+    langSwitch.appendChild(opt);
+  });
+  langSwitch.value = state.lang;
+  langSwitch.addEventListener("change", function () {
+    state.lang = langSwitch.value;
+    render();
+  });
+
+  var headerCta = document.getElementById("headerCta");
+
+  function t() { return LANG[state.lang]; }
+
+  function renderChrome() {
+    var d = t();
+    document.documentElement.lang = state.lang;
+    document.getElementById("brandName").textContent = d.brand;
+    headerCta.textContent = "✨ " + d.header.cta;
+    headerCta.href = linkFor(state.lang);
+  }
+
+  function renderIntro() {
+    var d = t().intro;
+    document.getElementById("introKicker").textContent = d.kicker;
+    document.getElementById("introTitle").textContent = d.title;
+    document.getElementById("introCopy1").textContent = d.copy1;
+    document.getElementById("introCopy2").textContent = d.copy2;
+    document.getElementById("startBtn").textContent = d.start;
+    var skip = document.getElementById("skipLink");
+    skip.textContent = d.skip;
+    skip.href = linkFor(state.lang);
+  }
+
+  function currentCounts() {
+    var counts = { A: 0, B: 0, C: 0, D: 0, E: 0, F: 0 };
+    state.answers.forEach(function (letter) {
+      if (letter) counts[letter]++;
+    });
+    return counts;
+  }
+
+  function renderQuestion() {
+    var d = t();
+    var q = d.questions[state.qIndex];
+    var total = d.questions.length;
+
+    document.getElementById("progressCount").textContent =
+      d.quiz.questionLabel + " " + (state.qIndex + 1) + " " + d.quiz.of + " " + total;
+    document.getElementById("progressFill").style.width =
+      (((state.qIndex) / total) * 100) + "%";
+
+    var dotsWrap = document.getElementById("qDots");
+    dotsWrap.innerHTML = "";
+    for (var i = 0; i < total; i++) {
+      var dot = document.createElement("span");
+      var cls = "q-dot";
+      if (i === state.qIndex) cls += " current";
+      else if (state.answers[i]) cls += " answered";
+      dot.className = cls;
+      dotsWrap.appendChild(dot);
+    }
+
+    document.getElementById("qText").textContent = q.text;
+
+    var optionsWrap = document.getElementById("qOptions");
+    optionsWrap.innerHTML = "";
+
+    var selected = state.answers[state.qIndex];
+
+    if (state.qIndex === 4) {
+      var mb = d.midBanner;
+      var banner = document.createElement("div");
+      banner.className = "mid-banner";
+      banner.innerHTML =
+        '<span class="mid-banner-icon">' + mb.icon + '</span>' +
+        '<span class="mid-banner-text">' + mb.text + '</span>';
+      var bcta = document.createElement("a");
+      bcta.className = "mid-banner-cta";
+      bcta.href = linkFor(state.lang);
+      bcta.target = "_blank";
+      bcta.rel = "noopener";
+      bcta.textContent = mb.cta;
+      banner.appendChild(bcta);
+      optionsWrap.parentNode.insertBefore(banner, optionsWrap);
+      optionsWrap._midBanner = banner;
+    } else if (optionsWrap.previousSibling && optionsWrap.previousSibling.className === "mid-banner") {
+      optionsWrap.previousSibling.remove();
+    }
+
+    q.options.forEach(function (opt) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "option" + (selected === opt.l ? " selected" : "");
+      btn.innerHTML =
+        '<span class="option-badge">' + opt.e + '</span>' +
+        '<span class="option-text">' + opt.t + '</span>';
+      btn.addEventListener("click", function () {
+        state.answers[state.qIndex] = opt.l;
+        if (state.qIndex < total - 1) {
+          state.qIndex++;
+          renderQuestion();
+        } else {
+          showResult();
+        }
+      });
+      optionsWrap.appendChild(btn);
+    });
+
+    var backBtn = document.getElementById("backBtn");
+    backBtn.textContent = d.quiz.back;
+    backBtn.style.visibility = state.qIndex === 0 ? "hidden" : "visible";
+  }
+
+  function showScreen(name) {
+    ["screenIntro", "screenQuiz", "screenResult"].forEach(function (id) {
+      document.getElementById(id).hidden = id !== name;
+    });
+  }
+
+  function showResult() {
+    var d = t();
+    var counts = currentCounts();
+    var winner = LETTERS[0];
+    var best = -1;
+    LETTERS.forEach(function (l) {
+      if (counts[l] > best) { best = counts[l]; winner = l; }
+    });
+    var r = d.results[winner];
+
+    document.getElementById("resultBadge").textContent = r.emoji;
+    document.getElementById("resultKicker").textContent = d.result.kicker;
+    document.getElementById("resultTitle").textContent = r.title;
+    document.getElementById("resultCopy").textContent = r.copy;
+
+    var grid = document.getElementById("careerGrid");
+    grid.innerHTML = "";
+    r.careers.forEach(function (c) {
+      var chip = document.createElement("div");
+      chip.className = "career-chip";
+      chip.textContent = c;
+      grid.appendChild(chip);
+    });
+
+    document.getElementById("resultPitch").textContent = r.pitch + " " + d.result.pitchIntro;
+
+    var cta = document.getElementById("resultCta");
+    cta.href = linkFor(state.lang);
+    document.getElementById("resultCtaMain").textContent = "🚀 " + d.result.ctaMain;
+    document.getElementById("resultCtaSub").textContent = d.result.ctaSub;
+
+    document.getElementById("retakeBtn").textContent = d.result.retake;
+
+    showScreen("screenResult");
+    window.scrollTo(0, 0);
+  }
+
+  document.getElementById("startBtn").addEventListener("click", function () {
+    state.qIndex = 0;
+    showScreen("screenQuiz");
+    renderQuestion();
+  });
+
+  document.getElementById("backBtn").addEventListener("click", function () {
+    if (state.qIndex > 0) {
+      state.qIndex--;
+      renderQuestion();
+    }
+  });
+
+  document.getElementById("retakeBtn").addEventListener("click", function () {
+    state.qIndex = 0;
+    state.answers = [];
+    showScreen("screenIntro");
+    window.scrollTo(0, 0);
+  });
+
+  function render() {
+    renderChrome();
+    renderIntro();
+    if (!document.getElementById("screenQuiz").hidden) renderQuestion();
+    if (!document.getElementById("screenResult").hidden) showResult();
+  }
+
+  render();
+  showScreen("screenIntro");
+})();
+</script>
