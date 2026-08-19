@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Career Spark Quiz</title>
 <style>
   /* Novakid "Back to English" brand system — a fixed identity, not a
@@ -178,12 +179,6 @@
     text-wrap: balance;
     color: var(--indigo);
   }
-  .intro-copy {
-    font-size: 0.98rem;
-    line-height: 1.55;
-    color: var(--indigo-soft);
-    margin: 0 0 12px;
-  }
   .intro-highlight {
     font-size: 0.98rem;
     line-height: 1.55;
@@ -324,28 +319,6 @@
   }
   .ghost-btn:hover { color: var(--purple); }
 
-  .mid-banner {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    background: var(--coral);
-    border-radius: 18px;
-    padding: 14px 16px;
-    margin-bottom: 16px;
-  }
-  .mid-banner-icon { font-size: 1.5rem; }
-  .mid-banner-text { flex: 1; font-size: 0.85rem; line-height: 1.4; font-weight: 600; color: var(--indigo); }
-  .mid-banner-cta {
-    background: var(--yellow);
-    color: var(--indigo);
-    font-size: 0.78rem;
-    font-weight: 800;
-    padding: 8px 12px;
-    border-radius: 999px;
-    text-decoration: none;
-    white-space: nowrap;
-  }
-
   .result-badge {
     width: 64px;
     height: 64px;
@@ -377,6 +350,12 @@
     line-height: 1.55;
     color: var(--indigo-soft);
     margin: 0 0 16px;
+  }
+  .result-lead {
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: var(--indigo);
+    margin: 0 0 10px;
   }
   .career-grid {
     display: grid;
@@ -472,7 +451,6 @@
     <section class="card" id="screenIntro">
       <span class="kicker" id="introKicker"></span>
       <h1 class="display" id="introTitle"></h1>
-      <p class="intro-copy" id="introCopy1"></p>
       <p class="intro-highlight" id="introCopy2"></p>
       <button class="start-btn display" id="startBtn"></button>
       <a class="skip-link" id="skipLink" href="#" target="_blank" rel="noopener"></a>
@@ -496,6 +474,7 @@
       <div class="result-kicker" id="resultKicker"></div>
       <h2 class="result-title display" id="resultTitle"></h2>
       <p class="result-copy" id="resultCopy"></p>
+      <p class="result-lead" id="resultLead"></p>
       <div class="career-grid" id="careerGrid"></div>
       <p class="result-pitch" id="resultPitch"></p>
       <a class="hero-cta display" id="resultCta" href="#" target="_blank" rel="noopener">
@@ -533,8 +512,7 @@
       intro: {
         kicker: "Novakid Career Quiz",
         title: "What Career Fits Your Child?",
-        copy1: "Every child is born with their own strengths: some love inventing stories, some enjoy building with construction sets, exploring plants, or helping others.",
-        copy2: "💛 Answer just 8 questions to see which abilities your child is already showing — and what they reveal about a future career!",
+        copy2: "💛 Answer just 6 questions to see which abilities your child is already showing — and what they reveal about a future career!",
         start: "Start the quiz",
         skip: "Already convinced? Book a free trial lesson →"
       },
@@ -543,13 +521,9 @@
         of: "of",
         back: "← Back"
       },
-      midBanner: {
-        icon: "🚀",
-        text: "While your child's future career takes shape — why not give English a try? Book a free trial lesson with Novakid.",
-        cta: "Book now"
-      },
       result: {
         kicker: "Your child's result",
+        careersLead: "Your child might enjoy careers in fields like:",
         pitchIntro: "Start learning English with Novakid! Tap the button below to book a free trial lesson!",
         ctaMain: "Book a free trial lesson",
         ctaSub: "with Novakid — for free",
@@ -565,17 +539,6 @@
             { l: "D", e: "💬", t: "Talks with other kids, makes friends easily, and loves telling stories." },
             { l: "E", e: "⭐", t: "Invents new games, comes up with wild ideas, and loves being in charge." },
             { l: "F", e: "❤️", t: "Takes care of animals, helps younger kids, or worries about others' feelings." }
-          ]
-        },
-        {
-          text: "If your child gets a new toy, what's the first thing they do?",
-          options: [
-            { l: "A", e: "🎨", t: "Makes up a story for it — where it's from, who its friends are, what countries it's visited." },
-            { l: "B", e: "🔬", t: "Wants to understand how it works and what it's made of." },
-            { l: "C", e: "🧩", t: "Tries to build or upgrade it." },
-            { l: "D", e: "💬", t: "Shows it to friends and invites them to play together." },
-            { l: "E", e: "⭐", t: "Invents a brand-new game with it." },
-            { l: "F", e: "❤️", t: "Happily shares it with a friend." }
           ]
         },
         {
@@ -609,17 +572,6 @@
             { l: "D", e: "💬", t: "Makes 5 new friends on the very first day." },
             { l: "E", e: "⭐", t: "Puts together a detailed plan for every day of the trip." },
             { l: "F", e: "❤️", t: "Makes sure nobody forgets anything!" }
-          ]
-        },
-        {
-          text: "Which compliment makes your child happiest?",
-          options: [
-            { l: "A", e: "🎨", t: "“That turned out so beautiful!”" },
-            { l: "B", e: "🔬", t: "“You know so much!”" },
-            { l: "C", e: "🧩", t: "“You did such a great job!”" },
-            { l: "D", e: "💬", t: "“Talking to you is so interesting!”" },
-            { l: "E", e: "⭐", t: "“You're a real leader!”" },
-            { l: "F", e: "❤️", t: "“You're so kind!”" }
           ]
         },
         {
@@ -698,8 +650,7 @@
       intro: {
         kicker: "Квиз Novakid о профессиях",
         title: "Какая профессия подойдёт вашему ребёнку?",
-        copy1: "Каждый ребёнок рождается со своими сильными сторонами: кто-то любит придумывать истории, кто-то — возиться с конструктором, исследовать растения или помогать окружающим.",
-        copy2: "💛 Ответьте всего на 8 вопросов и узнайте, какие способности уже сейчас проявляются у вашего ребёнка и что они говорят о его будущей профессии!",
+        copy2: "💛 Ответьте всего на 6 вопросов и узнайте, какие способности уже сейчас проявляются у вашего ребёнка и что они говорят о его будущей профессии!",
         start: "Начать квиз",
         skip: "Уже готовы? Записаться на бесплатный урок →"
       },
@@ -708,13 +659,9 @@
         of: "из",
         back: "← Назад"
       },
-      midBanner: {
-        icon: "🚀",
-        text: "Пока будущая профессия вашего ребёнка вырисовывается — почему бы не попробовать английский? Запишитесь на бесплатный урок в Novakid.",
-        cta: "Записаться"
-      },
       result: {
         kicker: "Результат вашего ребёнка",
+        careersLead: "Ему подойдут профессии в таких сферах, как:",
         pitchIntro: "Начните изучать английский в Novakid! Нажимайте на кнопку, чтобы записаться на бесплатный пробный урок!",
         ctaMain: "Записаться на бесплатный урок",
         ctaSub: "в Novakid — бесплатно",
@@ -730,17 +677,6 @@
             { l: "D", e: "💬", t: "Общается с другими детьми, легко знакомится и любит рассказывать истории." },
             { l: "E", e: "⭐", t: "Придумывает новые игры, генерирует безумные идеи и любит быть главным." },
             { l: "F", e: "❤️", t: "Заботится о животных, помогает младшим или переживает за других." }
-          ]
-        },
-        {
-          text: "Если перед вашим ребёнком новая игрушка, что он сделает первым?",
-          options: [
-            { l: "A", e: "🎨", t: "Придумает для неё историю: откуда игрушка, кто её друзья, в каких странах она была." },
-            { l: "B", e: "🔬", t: "Захочет понять, как она работает и из чего сделана." },
-            { l: "C", e: "🧩", t: "Попробует собрать или модернизировать её." },
-            { l: "D", e: "💬", t: "Покажет друзьям и предложит поиграть вместе." },
-            { l: "E", e: "⭐", t: "Придумает новую игру с этой игрушкой." },
-            { l: "F", e: "❤️", t: "С удовольствием поделится игрушкой с кем-нибудь из друзей." }
           ]
         },
         {
@@ -774,17 +710,6 @@
             { l: "D", e: "💬", t: "Заведёт 5 новых друзей в первый же день." },
             { l: "E", e: "⭐", t: "Составит подробный план действий на каждый день путешествия." },
             { l: "F", e: "❤️", t: "Проследит, чтобы никто ничего не забыл!" }
-          ]
-        },
-        {
-          text: "Какая похвала радует вашего ребёнка больше всего?",
-          options: [
-            { l: "A", e: "🎨", t: "«Как красиво получилось!»" },
-            { l: "B", e: "🔬", t: "«Ты столько всего знаешь!»" },
-            { l: "C", e: "🧩", t: "«Ты отлично справился!»" },
-            { l: "D", e: "💬", t: "«С тобой так интересно разговаривать!»" },
-            { l: "E", e: "⭐", t: "«Ты настоящий лидер!»" },
-            { l: "F", e: "❤️", t: "«Ты такой добрый!»" }
           ]
         },
         {
@@ -904,7 +829,6 @@
     var d = t().intro;
     document.getElementById("introKicker").textContent = d.kicker;
     document.getElementById("introTitle").textContent = d.title;
-    document.getElementById("introCopy1").textContent = d.copy1;
     document.getElementById("introCopy2").textContent = d.copy2;
     document.getElementById("startBtn").textContent = d.start;
     var skip = document.getElementById("skipLink");
@@ -947,26 +871,6 @@
     optionsWrap.innerHTML = "";
 
     var selected = state.answers[state.qIndex];
-
-    if (state.qIndex === 4) {
-      var mb = d.midBanner;
-      var banner = document.createElement("div");
-      banner.className = "mid-banner";
-      banner.innerHTML =
-        '<span class="mid-banner-icon">' + mb.icon + '</span>' +
-        '<span class="mid-banner-text">' + mb.text + '</span>';
-      var bcta = document.createElement("a");
-      bcta.className = "mid-banner-cta";
-      bcta.href = linkFor(state.lang);
-      bcta.target = "_blank";
-      bcta.rel = "noopener";
-      bcta.textContent = mb.cta;
-      banner.appendChild(bcta);
-      optionsWrap.parentNode.insertBefore(banner, optionsWrap);
-      optionsWrap._midBanner = banner;
-    } else if (optionsWrap.previousSibling && optionsWrap.previousSibling.className === "mid-banner") {
-      optionsWrap.previousSibling.remove();
-    }
 
     q.options.forEach(function (opt) {
       var btn = document.createElement("button");
@@ -1012,6 +916,7 @@
     document.getElementById("resultKicker").textContent = d.result.kicker;
     document.getElementById("resultTitle").textContent = r.title;
     document.getElementById("resultCopy").textContent = r.copy;
+    document.getElementById("resultLead").textContent = d.result.careersLead;
 
     var grid = document.getElementById("careerGrid");
     grid.innerHTML = "";
