@@ -204,16 +204,6 @@
   }
   .start-btn:hover { transform: translateY(-2px); }
 
-  .skip-link {
-    display: block;
-    text-align: center;
-    margin-top: 14px;
-    font-size: 0.85rem;
-    color: var(--purple);
-    text-decoration: none;
-    font-weight: 700;
-  }
-
   .progress-row {
     display: flex;
     align-items: center;
@@ -453,7 +443,6 @@
       <h1 class="display" id="introTitle"></h1>
       <p class="intro-highlight" id="introCopy2"></p>
       <button class="start-btn display" id="startBtn"></button>
-      <a class="skip-link" id="skipLink" href="#" target="_blank" rel="noopener"></a>
     </section>
 
     <section class="card" id="screenQuiz" hidden>
@@ -513,8 +502,7 @@
         kicker: "Novakid Career Quiz",
         title: "What Career Fits Your Child?",
         copy2: "💛 Answer just 6 questions to see which abilities your child is already showing — and what they reveal about a future career!",
-        start: "Start the quiz",
-        skip: "Already convinced? Book a free trial lesson →"
+        start: "Start the quiz"
       },
       quiz: {
         questionLabel: "Question",
@@ -651,8 +639,7 @@
         kicker: "Квиз Novakid о профессиях",
         title: "Какая профессия подойдёт вашему ребёнку?",
         copy2: "💛 Ответьте всего на 6 вопросов и узнайте, какие способности уже сейчас проявляются у вашего ребёнка и что они говорят о его будущей профессии!",
-        start: "Начать квиз",
-        skip: "Уже готовы? Записаться на бесплатный урок →"
+        start: "Начать квиз"
       },
       quiz: {
         questionLabel: "Вопрос",
@@ -831,9 +818,6 @@
     document.getElementById("introTitle").textContent = d.title;
     document.getElementById("introCopy2").textContent = d.copy2;
     document.getElementById("startBtn").textContent = d.start;
-    var skip = document.getElementById("skipLink");
-    skip.textContent = d.skip;
-    skip.href = linkFor(state.lang);
   }
 
   function currentCounts() {
